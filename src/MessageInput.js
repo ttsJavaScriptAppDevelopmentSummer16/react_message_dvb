@@ -3,8 +3,14 @@ import {style} from './style'
 
 
 class MessageInput extends Component {
+    constructor() {
+        super();
+        this.state = {
+            property : 0
+        };
+    }
   render() {
-      let button = false;
+      let hideButton = true;
       let currentUser = 'Dave';
       let messages = [
           {
@@ -30,9 +36,9 @@ class MessageInput extends Component {
       ];
       let highlightRed = (usr) => {
         if(usr===currentUser){
-            return style.red
+            return style.red;
         } else {
-            return style.norm
+            return style.norm;
         }
       }
 
@@ -40,12 +46,20 @@ class MessageInput extends Component {
             let arry = tasks;
             let count = arry[0].length
             if(count < 3){
-                button = false;
                 return arry;
             } else {
-                button = true;
                 return arry[0].splice(0,3);
             }
+      }
+
+      let hide = (...items) => {
+          if(items.length < 3){
+              hideButton = true;
+              return hideButton;
+          } else {
+              hideButton = false;
+              return hideButton;
+          }
       }
 
       let current = messages.map((obj, i) => <li key={i}><u>{obj.user}</u> <b>@</b> {obj.time}  <b>said</b>  <h4 style={highlightRed(obj.user)}>"{obj.text}"</h4></li>);
@@ -58,7 +72,7 @@ class MessageInput extends Component {
             </label>
             <button type="button">Send</button>
             <ul style={style.main}>{onlyThree(current)}</ul>
-            <button style={{marginLeft: '75%'}} type="button">Load More</button>
+            <button style={{marginLeft: '75%', hidden: hide()}} type="button">Load More</button>
         </div>
     );
   }
