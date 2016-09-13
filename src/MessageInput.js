@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import {style} from './style'
 
 
+
 class MessageInput extends Component {
     constructor() {
         super();
