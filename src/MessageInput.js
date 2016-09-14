@@ -21,7 +21,7 @@ class Inputfield extends Component {
                 <label htmlFor="in" style={style.main}>Message:
                     <input id="in" name="adder" style={style.main} type="text"/>
                 </label>
-                <button type="button">Send</button>
+                <button type="button" onClick={(e) => (this.props.addMsg(this, e))}>Send</button>
             </div>
         );
     }
