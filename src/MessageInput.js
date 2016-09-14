@@ -2,42 +2,34 @@ import React, { Component } from 'react';
 import {style} from './style'
 
 class Message extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            text: '',
-            user: '',
-            time: ''
-        };
-    }
     render() {
+        console.log(this.props)
+        let user = this.props.obj.user;
+        let time = this.props.obj.time;
+        let text = this.props.obj.text;
+        let currentUser = "Dave"
         return (
-            <div>
-                <li><u>{this.user}</u> <b>@</b> {this.time}  <b>said</b>  <h4 style={this.props.highlightRed(this.user)}>"{this.text}"</h4></li>
-            </div>
+                <li><u>{user}</u> <b>@</b> {time}  <b>said</b>  <h4 style={user === currentUser ? style.red : style.norm}>"{text}"</h4></li>
         );
     }
 }
 
-class inputField extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            textVal: ''
-        };
-    }
+class Inputfield extends Component {
     render() {
         return (
-            <div onClick={this.tick}>
-                Clicks: {this.state.count}
+            <div>
+                <label htmlFor="in" style={style.main}>Message:
+                    <input id="in" name="adder" style={style.main} type="text"/>
+                </label>
+                <button type="button">Send</button>
             </div>
         );
     }
 }
 
 export class MessageInput extends Component {
-    constructor(props) {
-        super(props);
+    constructor() {
+        super();
         this.state = {
             msgs: [
                 {
@@ -60,33 +52,42 @@ export class MessageInput extends Component {
                     time: `5:00`,
                     user: `HAL`
                 }
-            ]
+            ],
+            loadMore: false
         };
     }
-    hide = (...items) => {
-        if(items.length < 3){
-            hideButton = true;
-            return hideButton;
+
+    limitThree = (...tasks) => {
+        let arry = tasks
+        let count = arry[0].length
+        if(count < 3){
+            return arry;
         } else {
-            hideButton = false;
-            return hideButton;
+            return arry[0].splice(0,3);
         }
     }
 
-    render() {
+    addMsg = (event) => {
+        console.log('clicked!', event)
+    }
 
+    loadAll = (event) => {
+        this.setState({loadMore: true})
+    }
+
+    render() {
+        let current = this.state.msgs.map((obj, i) => <Message key={i} obj={obj} />);
         return (
             <div style={{paddingTop: '15%'}}>
                 <h3 style={style.main}>React Message</h3>
                 <br/>
-                <label htmlFor="in" style={style.main}>Message:
-                    <input id="in" style={style.main} type="text"/>
-                </label>
-                <button type="button">Send</button>
-                <ul style={style.main}>{onlyThree(current)}</ul>
-                <button style={{marginLeft: '75%', hidden: hide()}} type="button">Load More</button>
+                <Inputfield />
+                <ul style={style.main}>{this.state.loadMore ? current : this.limitThree(current)}</ul>
+                <button style={{marginLeft: '70%', hidden: this.state.msgs.length > 3}} type="button" onClick={this.loadAll}>Load More</button>
             </div>
         );
     }
 }
+
+Message.propTypes = { obj: React.PropTypes.object };
 export default MessageInput;
