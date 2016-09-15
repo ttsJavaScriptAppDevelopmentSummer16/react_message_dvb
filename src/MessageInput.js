@@ -19,9 +19,9 @@ class Inputfield extends Component {
         return (
             <div>
                 <label htmlFor="in" style={style.main}>Message:
-                    <input id="in" name="adder" style={style.main} type="text"/>
+                    <input id="in" name="adder" style={style.main} type="text" placeholder="Type a message here"/>
                 </label>
-                <button type="button" onClick={(e) => (this.props.addMsg(this, e))}>Send</button>
+                <button type="button" onClick={(e) => (this.props.addMsg('test', e))}>Send</button>
             </div>
         );
     }
@@ -65,8 +65,8 @@ export class MessageInput extends Component {
             return arry[0].splice(0,3);
         }
     }
-    addMsg = (event) => {
-        console.log('clicked!', event)
+    addMsg = (text, event) => {
+        console.log('clicked!', text, event)
     }
     loadAll = (event) => {
         this.setState({loadMore: true})
@@ -77,7 +77,7 @@ export class MessageInput extends Component {
             <div style={{paddingTop: '15%'}}>
                 <h3 style={style.main}>React Message</h3>
                 <br/>
-                <Inputfield />
+                <Inputfield addMsg={this.addMsg} />
                 <ul style={style.main}>{this.state.loadMore ? current : this.limitThree(current)}</ul>
                 <button style={{marginLeft: '70%', hidden: this.state.msgs.length > 3}} type="button" onClick={this.loadAll}>Load More</button>
             </div>
