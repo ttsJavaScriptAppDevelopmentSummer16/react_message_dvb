@@ -56,7 +56,6 @@ export class MessageInput extends Component {
             loadMore: false
         };
     }
-
     limitThree = (...tasks) => {
         let arry = tasks
         let count = arry[0].length
@@ -66,15 +65,12 @@ export class MessageInput extends Component {
             return arry[0].splice(0,3);
         }
     }
-
     addMsg = (event) => {
         console.log('clicked!', event)
     }
-
     loadAll = (event) => {
         this.setState({loadMore: true})
     }
-
     render() {
         let current = this.state.msgs.map((obj, i) => <Message key={i} obj={obj} />);
         return (
