@@ -3,10 +3,10 @@ import {style} from './style'
 
 class Message extends Component {
     render() {
-        console.log(this.props)
         let user = this.props.obj.user;
         let time = this.props.obj.time;
         let text = this.props.obj.text;
+        //For convenience hard coding current user
         let currentUser = "Dave"
         return (
                 <li><u>{user}</u> <b>@</b> {time}  <b>said</b>  <h4 style={user === currentUser ? style.red : style.norm}>"{text}"</h4></li>
@@ -16,12 +16,14 @@ class Message extends Component {
 
 class Inputfield extends Component {
     render() {
+        //Here is where refs came handy
+        let getText = () => this.refs.adder.value;
         return (
             <div>
                 <label htmlFor="in" style={style.main}>Message:
-                    <input id="in" name="adder" style={style.main} type="text" placeholder="Type a message here"/>
+                    <input id="in" ref="adder" style={style.main} type="text" placeholder="Type a message here"/>
                 </label>
-                <button type="button" onClick={(e) => (this.props.addMsg('test', e))}>Send</button>
+                <button type="button" onClick={(e) => (this.props.addMsg(getText(), e))}>Send</button>
             </div>
         );
     }
@@ -66,7 +68,14 @@ export class MessageInput extends Component {
         }
     }
     addMsg = (text, event) => {
-        console.log('clicked!', text, event)
+        let arryMsgs = this.state.msgs
+        //Here I would have a function to grab the time
+        let time = `ERROR: CLOCK`
+        //Here I would have a function to grab the currently logged in user
+        let user = `Dave`
+        let fullMessage = {text, time, user}
+        arryMsgs.push(fullMessage)
+        this.setState({msgs: arryMsgs, loadMore: false})
     }
     loadAll = (event) => {
         this.setState({loadMore: true})
